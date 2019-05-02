@@ -1,0 +1,70 @@
+# Copyright 2019 the original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+[buildpack]
+id = "org.cloudfoundry.tomcat"
+name = "Cloud Foundry Apache Tomcat Buildpack"
+version = "1.0.0-BUILD-SNAPSHOT"
+
+stacks = [
+  { id = "io.buildpacks.stacks.bionic" },
+  { id = "org.cloudfoundry.stacks.cflinuxfs3" },
+]
+
+[[metadata.dependencies]]
+id      = "tomcat"
+name    = "Apache Tomcat"
+version = "7.0.93"
+uri     = "https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.93/bin/apache-tomcat-7.0.93.tar.gz"
+sha256  = "72026b62f9bf8f83413b3e1275646e4cc5e6fc559fce4c5637557c1d9a47154c"
+stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
+
+  [[metadata.dependencies.licenses]]
+  type = "Apache-2.0"
+  uri  = "https://www.apache.org/licenses/"
+
+[[metadata.dependencies]]
+id      = "tomcat"
+name    = "Apache Tomcat"
+version = "8.5.39"
+uri     = "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.39/bin/apache-tomcat-8.5.39.tar.gz"
+sha256  = "18f8b26468389202eaf5ad0f40b16ace1addea312bedbd2a09b72558d8aad696"
+stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
+
+  [[metadata.dependencies.licenses]]
+  type = "Apache-2.0"
+  uri  = "https://www.apache.org/licenses/"
+
+[[metadata.dependencies]]
+id      = "tomcat"
+name    = "Apache Tomcat"
+version = "9.0.18"
+uri     = "https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.18/bin/apache-tomcat-9.0.18.tar.gz"
+sha256  = "95bc1b85e8baa485f148ceeafd921f45e8b632891b31b2aa7199d839e203e619"
+stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
+
+  [[metadata.dependencies.licenses]]
+  type = "Apache-2.0"
+  uri  = "https://www.apache.org/licenses/"
+
+[metadata]
+pre_package = "ci/build.sh"
+include_files = [
+  "LICENSE",
+  "NOTICE",
+  "README.md",
+  "bin/build",
+  "bin/detect",
+  "buildpack.toml",
+]
