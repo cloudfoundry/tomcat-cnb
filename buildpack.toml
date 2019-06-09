@@ -59,6 +59,42 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
   type = "Apache-2.0"
   uri  = "https://www.apache.org/licenses/"
 
+[[metadata.dependencies]]
+id      = "tomcat-access-logging-support"
+name    = "Apache Tomcat"
+version = "3.2.0"
+uri     = "https://java-buildpack.cloudfoundry.org/tomcat-access-logging-support/tomcat-access-logging-support-3.2.0_RELEASE.jar"
+sha256  = "62d83cc6008ed84872f12e87d74930aee1806233ea2d1ea934d03dffa2b3b5e9"
+stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
+
+  [[metadata.dependencies.licenses]]
+  type = "Apache-2.0"
+  uri  = "https://github.com/cloudfoundry/java-buildpack-support/blob/master/LICENSE"
+
+[[metadata.dependencies]]
+id      = "tomcat-lifecycle-support"
+name    = "Apache Tomcat"
+version = "3.2.0"
+uri     = "https://java-buildpack.cloudfoundry.org/tomcat-lifecycle-support/tomcat-lifecycle-support-3.2.0_RELEASE.jar"
+sha256  = "742a2a4df1ffd5ab4ecc1adcdbf249fb232e953e6e6f64a58ea6d5b125cfa062"
+stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
+
+  [[metadata.dependencies.licenses]]
+  type = "Apache-2.0"
+  uri  = "https://github.com/cloudfoundry/java-buildpack-support/blob/master/LICENSE"
+
+[[metadata.dependencies]]
+id      = "tomcat-logging-support"
+name    = "Apache Tomcat"
+version = "3.2.0"
+uri     = "https://java-buildpack.cloudfoundry.org/tomcat-logging-support/tomcat-logging-support-3.2.0_RELEASE.jar"
+sha256  = "350ed637ce521aaa0a6e6935e077f8eb2dae0a634d518120e413dbc6c67826fc"
+stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
+
+  [[metadata.dependencies.licenses]]
+  type = "Apache-2.0"
+  uri  = "https://github.com/cloudfoundry/java-buildpack-support/blob/master/LICENSE"
+
 [metadata]
 pre_package = "ci/build.sh"
 include_files = [

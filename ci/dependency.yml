@@ -11,6 +11,9 @@ inputs:
 - name: tomcat-7
 - name: tomcat-8
 - name: tomcat-9
+- name: tomcat-access-logging-support
+- name: tomcat-lifecycle-support
+- Name: tomcat-logging-support
 - name: tomcat-cnb
 
 outputs:
