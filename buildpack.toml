@@ -74,9 +74,9 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
 [[metadata.dependencies]]
 id      = "tomcat-lifecycle-support"
 name    = "Apache Tomcat"
-version = "3.2.0"
-uri     = "https://java-buildpack.cloudfoundry.org/tomcat-lifecycle-support/tomcat-lifecycle-support-3.2.0_RELEASE.jar"
-sha256  = "742a2a4df1ffd5ab4ecc1adcdbf249fb232e953e6e6f64a58ea6d5b125cfa062"
+version = "3.3.0"
+uri     = "https://repo.spring.io/release/org/cloudfoundry/tomcat-lifecycle-support/3.3.0.RELEASE/tomcat-lifecycle-support-3.3.0.RELEASE.jar"
+sha256  = "b725f4cae0be4a999a08ed978b29081edfd68a187a926ed740cc1f8e9aca70ce"
 stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
 
   [[metadata.dependencies.licenses]]
