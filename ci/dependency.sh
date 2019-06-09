@@ -43,7 +43,7 @@ commit tomcat $(cat ../tomcat-9/version)
 bin/dependency tomcat-access-logging-support "[\d]+\.[\d]+\.[\d]+" $(version ../tomcat-access-logging-support/version) $(cat ../tomcat-access-logging-support/uri)  $(cat ../tomcat-access-logging-support/sha256)
 commit tomcat-access-logging-support $(version ../tomcat-access-logging-support/version)
 
-bin/dependency tomcatlifecycle-support "[\d]+\.[\d]+\.[\d]+" $(version ../tomcat-lifecycle-support/version) $(cat ../tomcat-lifecycle-support/uri)  $(cat ../tomcat-lifecycle-support/sha256)
+bin/dependency tomcat-lifecycle-support "[\d]+\.[\d]+\.[\d]+" $(version ../tomcat-lifecycle-support/version) $(cat ../tomcat-lifecycle-support/uri)  $(cat ../tomcat-lifecycle-support/sha256)
 commit tomcat-lifecycle-support $(version ../tomcat-lifecycle-support/version)
 
 bin/dependency tomcat-logging-support "[\d]+\.[\d]+\.[\d]+" $(version ../tomcat-logging-support/version) $(cat ../tomcat-logging-support/uri)  $(cat ../tomcat-logging-support/sha256)
