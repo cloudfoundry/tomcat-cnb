@@ -86,9 +86,9 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
 [[metadata.dependencies]]
 id      = "tomcat-logging-support"
 name    = "Apache Tomcat"
-version = "3.2.0"
-uri     = "https://java-buildpack.cloudfoundry.org/tomcat-logging-support/tomcat-logging-support-3.2.0_RELEASE.jar"
-sha256  = "350ed637ce521aaa0a6e6935e077f8eb2dae0a634d518120e413dbc6c67826fc"
+version = "3.3.0"
+uri     = "https://repo.spring.io/release/org/cloudfoundry/tomcat-logging-support/3.3.0.RELEASE/tomcat-logging-support-3.3.0.RELEASE.jar"
+sha256  = "46db58c1d8ef2555d7053a12d669daefb676e9a17a2a1771cd60c95bcb210b0d"
 stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
 
   [[metadata.dependencies.licenses]]
