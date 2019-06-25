@@ -41,11 +41,11 @@ func main() {
 }
 
 func b(build build.Build) (int, error) {
-	build.Logger.FirstLine(build.Logger.PrettyIdentity(build.Buildpack))
-
 	if t, ok, err := tomcat.NewTomcat(build); err != nil {
 		return build.Failure(102), err
 	} else if ok {
+		build.Logger.FirstLine(build.Logger.PrettyIdentity(build.Buildpack))
+
 		if err := t.Contribute(); err != nil {
 			return build.Failure(103), err
 		}
