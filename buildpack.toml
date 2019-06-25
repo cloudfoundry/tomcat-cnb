@@ -1,10 +1,10 @@
-# Copyright 2019 the original author or authors.
+# Copyright 2018-2019 the original author or authors.
 #
-# Licensed under the Apache License, Version 2.0 (the License);
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#      https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,9 @@ id = "io.buildpacks.stacks.bionic"
 
 [[stacks]]
 id = "org.cloudfoundry.stacks.cflinuxfs3"
+
+[metadata.default-versions]
+tomcat = "9.*"
 
 [[metadata.dependencies]]
 id      = "tomcat"
@@ -61,7 +64,7 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
 
 [[metadata.dependencies]]
 id      = "tomcat-access-logging-support"
-name    = "Apache Tomcat"
+name    = "Apache Tomcat Access Logging Support"
 version = "3.3.0"
 uri     = "https://repo.spring.io/release/org/cloudfoundry/tomcat-access-logging-support/3.3.0.RELEASE/tomcat-access-logging-support-3.3.0.RELEASE.jar"
 sha256  = "49f9acac1bed65c683276d662c985ed63c685a603e7f5b72f732673bb826a0d4"
@@ -73,7 +76,7 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
 
 [[metadata.dependencies]]
 id      = "tomcat-lifecycle-support"
-name    = "Apache Tomcat"
+name    = "Apache Tomcat Lifecycle Support"
 version = "3.3.0"
 uri     = "https://repo.spring.io/release/org/cloudfoundry/tomcat-lifecycle-support/3.3.0.RELEASE/tomcat-lifecycle-support-3.3.0.RELEASE.jar"
 sha256  = "b725f4cae0be4a999a08ed978b29081edfd68a187a926ed740cc1f8e9aca70ce"
@@ -85,7 +88,7 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
 
 [[metadata.dependencies]]
 id      = "tomcat-logging-support"
-name    = "Apache Tomcat"
+name    = "Apache Tomcat Logging Support"
 version = "3.3.0"
 uri     = "https://repo.spring.io/release/org/cloudfoundry/tomcat-logging-support/3.3.0.RELEASE/tomcat-logging-support-3.3.0.RELEASE.jar"
 sha256  = "46db58c1d8ef2555d7053a12d669daefb676e9a17a2a1771cd60c95bcb210b0d"
@@ -104,4 +107,7 @@ include_files = [
   "bin/build",
   "bin/detect",
   "buildpack.toml",
+  "context.xml",
+  "logging.properties",
+  "server.xml",
 ]

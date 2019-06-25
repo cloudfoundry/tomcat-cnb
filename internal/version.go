@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-package main
+package internal
 
 import (
-	"testing"
+	"os"
 
-	"github.com/cloudfoundry/libcfbuildpack/build"
-	"github.com/cloudfoundry/libcfbuildpack/test"
-	. "github.com/onsi/gomega"
-	"github.com/sclevine/spec"
-	"github.com/sclevine/spec/report"
+	"github.com/buildpack/libbuildpack/buildplan"
+	"github.com/cloudfoundry/libcfbuildpack/buildpack"
 )
 
-func TestBuild(t *testing.T) {
-	spec.Run(t, "Build", func(t *testing.T, _ spec.G, it spec.S) {
+// Version returns the selected version of Tomcat using the following precedence:
+//
+// 1. $BP_TOMCAT_VERSION
+// 2. Build Plan Version
+// 3. Buildpack Metadata "default_versions"
+func Version(id string, dependency buildplan.Dependency, buildpack buildpack.Buildpack) (string, error) {
+	if version, ok := os.LookupEnv("BP_TOMCAT_VERSION"); ok {
+		return version, nil
+	}
 
-		g := NewGomegaWithT(t)
+	if dependency.Version != "" {
+		return dependency.Version, nil
+	}
 
-		it("always passes", func() {
-			f := test.NewBuildFactory(t)
-
-			g.Expect(b(f.Build)).To(Equal(build.SuccessStatusCode))
-		})
-	}, spec.Report(report.Terminal{}))
+	return buildpack.DefaultVersion(id)
 }
