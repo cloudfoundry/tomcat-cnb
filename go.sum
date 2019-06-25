@@ -8,13 +8,10 @@ github.com/buildpack/libbuildpack v1.18.0/go.mod h1:qj2VrlQy+OmYGwWTPeQMa9bpvUPv
 github.com/cloudfoundry/jvm-application-cnb v1.0.0-M8 h1:2oxcPEyY4fzIAeB3Vh9Vb3I0I6yc7bQrueVepsCc78o=
 github.com/cloudfoundry/jvm-application-cnb v1.0.0-M8/go.mod h1:APfT/cW+0XYW/8ykDoW/r+jx4fBaAD+6RCGqUon99d0=
 github.com/cloudfoundry/libcfbuildpack v1.56.0/go.mod h1:sPuOxEenUfjpvM2Aa0DwkDX5B06N3wMQl2KcDpq7vj8=
-github.com/cloudfoundry/libcfbuildpack v1.59.0/go.mod h1:57VO1ixAfVq7fOahDfPWU0wzFOfE4rr6OWoCudOg0tk=
 github.com/cloudfoundry/libcfbuildpack v1.66.0 h1:AnZOkvpJoJsp4JtNtmOJwNA5I9aYeq7HPw2ZkfeSgDs=
 github.com/cloudfoundry/libcfbuildpack v1.66.0/go.mod h1:4pMJZ/PYfjLg3ZzOVwzqQ17yCUErBVkDMMTJ0RCTziU=
 github.com/cloudfoundry/openjdk-cnb v1.0.0-M8 h1:tUVDJW6R1oNTux1Qo1Ge+W32glhWcgd9NNaGBjkRqxo=
 github.com/cloudfoundry/openjdk-cnb v1.0.0-M8/go.mod h1:6731gcX2/ZrbUTY/rrHob7ofjv75ND58pus84tVnVh0=
-github.com/cloudfoundry/spring-boot-cnb v0.0.0-20190619044140-7224ba234ad4 h1:hPohGsvyhY3UUiuSuBTxsY2UJdapJPpS8I4npcGojzQ=
-github.com/cloudfoundry/spring-boot-cnb v0.0.0-20190619044140-7224ba234ad4/go.mod h1:+eABPkMpoJAcemzIM9SbA6JojTwCO0E8esC6fUaoZww=
 github.com/fatih/color v1.7.0 h1:DkWD4oS2D8LGGgTQ6IvwJJXSL5Vp2ffcQg58nFV38Ys=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
 github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV9I=
