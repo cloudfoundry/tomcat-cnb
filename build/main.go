@@ -22,7 +22,8 @@ import (
 
 	"github.com/buildpack/libbuildpack/buildplan"
 	"github.com/cloudfoundry/libcfbuildpack/build"
-	"github.com/cloudfoundry/tomcat-cnb/tomcat"
+	"github.com/cloudfoundry/tomcat-cnb/base"
+	"github.com/cloudfoundry/tomcat-cnb/home"
 )
 
 func main() {
@@ -41,13 +42,21 @@ func main() {
 }
 
 func b(build build.Build) (int, error) {
-	if t, ok, err := tomcat.NewTomcat(build); err != nil {
+	if b, ok, err := base.NewBase(build); err != nil {
 		return build.Failure(102), err
 	} else if ok {
 		build.Logger.FirstLine(build.Logger.PrettyIdentity(build.Buildpack))
 
-		if err := t.Contribute(); err != nil {
+		if err := b.Contribute(); err != nil {
 			return build.Failure(103), err
+		}
+
+		if h, err := home.NewHome(build); err != nil {
+			return build.Failure(102), err
+		} else {
+			if err := h.Contribute(); err != nil {
+				return build.Failure(103), err
+			}
 		}
 	}
 	return build.Success(buildplan.BuildPlan{})

@@ -98,6 +98,17 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
   type = "Apache-2.0"
   uri  = "https://github.com/cloudfoundry/java-buildpack-support/blob/master/LICENSE"
 
+#[[metadata.dependencies]]
+#id      = "tomcat-external-configuration"
+#name    = "Tomcat External Configuration"
+#version = ""
+#uri     = ""
+#sha256  = ""
+#stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
+#
+#  [[metadata.dependencies.licenses]]
+#  type = "Proprietary"
+
 [metadata]
 pre_package = "ci/build.sh"
 include_files = [
