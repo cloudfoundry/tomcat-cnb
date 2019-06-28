@@ -97,14 +97,14 @@ func (b Base) Contribute() error {
 }
 
 func (b Base) contributeAccessLogging(layer layers.Layer) error {
-	layer.Logger.FirstLine("Contributing Access Logging Support")
+	layer.Logger.Header("Contributing Access Logging Support")
 
 	artifact, err := b.accessLoggingLayer.Artifact()
 	if err != nil {
 		return err
 	}
 
-	layer.Logger.SubsequentLine("Copying %s to %s/lib", filepath.Base(artifact), layer.Root)
+	layer.Logger.Body("Copying to %s/lib", layer.Root)
 	if err := helper.CopyFile(artifact, filepath.Join(layer.Root, "lib", filepath.Base(artifact))); err != nil {
 		return err
 	}
@@ -124,25 +124,25 @@ export JAVA_OPTS="${JAVA_OPTS} -Daccess.logging.enabled=enabled"
 func (b Base) contributeApplication(layer layers.Layer) error {
 	cp := filepath.Join(layer.Root, "webapps", b.contextPath)
 
-	layer.Logger.FirstLine("Mounting application at %s", cp)
+	layer.Logger.Header("Mounting application at %s", cp)
 
 	return helper.WriteSymlink(b.application.Root, cp)
 }
 
 func (b Base) contributeConfiguration(layer layers.Layer) error {
-	layer.Logger.FirstLine("Contributing Configuration")
+	layer.Logger.Header("Contributing Configuration")
 
-	layer.Logger.SubsequentLine("Copying context.xml to %s/conf", layer.Root)
+	layer.Logger.Body("Copying context.xml to %s/conf", layer.Root)
 	if err := helper.CopyFile(filepath.Join(b.buildpack.Root, "context.xml"), filepath.Join(layer.Root, "conf", "context.xml")); err != nil {
 		return err
 	}
 
-	layer.Logger.SubsequentLine("Copying logging.properties to %s/conf", layer.Root)
+	layer.Logger.Body("Copying logging.properties to %s/conf", layer.Root)
 	if err := helper.CopyFile(filepath.Join(b.buildpack.Root, "logging.properties"), filepath.Join(layer.Root, "conf", "logging.properties")); err != nil {
 		return err
 	}
 
-	layer.Logger.SubsequentLine("Copying server.xml to %s/conf", layer.Root)
+	layer.Logger.Body("Copying server.xml to %s/conf", layer.Root)
 	if err := helper.CopyFile(filepath.Join(b.buildpack.Root, "server.xml"), filepath.Join(layer.Root, "conf", "server.xml")); err != nil {
 		return err
 	}
@@ -155,32 +155,32 @@ func (b Base) contributeExternalConfiguration(layer layers.Layer) error {
 		return nil
 	}
 
-	layer.Logger.FirstLine("Contributing External Configuration")
+	layer.Logger.Header("Contributing External Configuration")
 
 	artifact, err := b.externalConfigurationLayer.Artifact()
 	if err != nil {
 		return err
 	}
 
-	layer.Logger.SubsequentLine("Expanding to %s", layer.Root)
+	layer.Logger.Body("Expanding to %s", layer.Root)
 
 	return helper.ExtractTarGz(artifact, layer.Root, 0)
 }
 
 func (b Base) contributeLifecycleSupport(layer layers.Layer) error {
-	layer.Logger.FirstLine("Contributing Lifecycle Support")
+	layer.Logger.Header("Contributing Lifecycle Support")
 
 	artifact, err := b.lifecycleLayer.Artifact()
 	if err != nil {
 		return err
 	}
 
-	layer.Logger.SubsequentLine("Copying %s to %s/lib", filepath.Base(artifact), layer.Root)
+	layer.Logger.Body("Copying to %s/lib", layer.Root)
 	return helper.CopyFile(artifact, filepath.Join(layer.Root, "lib", filepath.Base(artifact)))
 }
 
 func (b Base) contributeLoggingSupport(layer layers.Layer) error {
-	layer.Logger.FirstLine("Contributing Logging Support")
+	layer.Logger.Header("Contributing Logging Support")
 
 	artifact, err := b.loggingLayer.Artifact()
 	if err != nil {
@@ -189,12 +189,12 @@ func (b Base) contributeLoggingSupport(layer layers.Layer) error {
 
 	destination := filepath.Join(layer.Root, "bin", filepath.Base(artifact))
 
-	layer.Logger.SubsequentLine("Copying %s to %s/bin", filepath.Base(artifact), layer.Root)
+	layer.Logger.Body("Copying to %s/bin", layer.Root)
 	if err := helper.CopyFile(artifact, destination); err != nil {
 		return err
 	}
 
-	layer.Logger.SubsequentLine("Writing %s/bin/setenv.sh", layer.Root)
+	layer.Logger.Body("Writing %s/bin/setenv.sh", layer.Root)
 	return helper.WriteFile(filepath.Join(layer.Root, "bin", "setenv.sh"), 0755, `#!/bin/sh
 
 CLASSPATH=%s`, destination)

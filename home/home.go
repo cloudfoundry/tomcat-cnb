@@ -33,7 +33,7 @@ type Home struct {
 
 func (h Home) Contribute() error {
 	if err := h.layer.Contribute(func(artifact string, layer layers.DependencyLayer) error {
-		layer.Logger.SubsequentLine("Extracting to %s", layer.Root)
+		layer.Logger.Body("Extracting to %s", layer.Root)
 
 		if err := helper.ExtractTarGz(artifact, layer.Root, 1); err != nil {
 			return err
