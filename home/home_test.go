@@ -26,7 +26,7 @@ import (
 	"github.com/cloudfoundry/libcfbuildpack/layers"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/cloudfoundry/tomcat-cnb/home"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega"
 	"github.com/sclevine/spec"
 	"github.com/sclevine/spec/report"
 )
@@ -34,7 +34,7 @@ import (
 func TestHome(t *testing.T) {
 	spec.Run(t, "Home", func(t *testing.T, when spec.G, it spec.S) {
 
-		g := NewGomegaWithT(t)
+		g := gomega.NewWithT(t)
 
 		var f *test.BuildFactory
 
@@ -50,13 +50,13 @@ func TestHome(t *testing.T) {
 			}
 
 			h, err := home.NewHome(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
 
-			g.Expect(h.Contribute()).To(Succeed())
+			g.Expect(h.Contribute()).To(gomega.Succeed())
 
 			layer := f.Build.Layers.Layer("tomcat")
 			g.Expect(layer).To(test.HaveLayerMetadata(false, false, true))
-			g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(BeARegularFile())
+			g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(gomega.BeARegularFile())
 			g.Expect(layer).To(test.HaveOverrideLaunchEnvironment("CATALINA_HOME", layer.Root))
 
 			command := "catalina.sh run"

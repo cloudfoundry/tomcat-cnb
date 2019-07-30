@@ -26,7 +26,7 @@ import (
 	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/cloudfoundry/tomcat-cnb/base"
-	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega"
 	"github.com/sclevine/spec"
 	"github.com/sclevine/spec/report"
 )
@@ -34,7 +34,7 @@ import (
 func TestBase(t *testing.T) {
 	spec.Run(t, "Base", func(t *testing.T, when spec.G, it spec.S) {
 
-		g := NewGomegaWithT(t)
+		g := gomega.NewWithT(t)
 
 		var f *test.BuildFactory
 
@@ -48,16 +48,16 @@ func TestBase(t *testing.T) {
 			}
 
 			_, ok, err := base.NewBase(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeFalse())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeFalse())
 		})
 
 		it("returns false with no WEB-INF", func() {
 			f.AddBuildPlan(jvmapplication.Dependency, buildplan.Dependency{})
 
 			_, ok, err := base.NewBase(f.Build)
-			g.Expect(err).NotTo(HaveOccurred())
-			g.Expect(ok).To(BeFalse())
+			g.Expect(err).NotTo(gomega.HaveOccurred())
+			g.Expect(ok).To(gomega.BeFalse())
 		})
 
 		when("valid application", func() {
@@ -78,15 +78,15 @@ func TestBase(t *testing.T) {
 
 			it("returns true with jvm-application and WEB-INF", func() {
 				_, ok, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
-				g.Expect(ok).To(BeTrue())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
+				g.Expect(ok).To(gomega.BeTrue())
 			})
 
 			it("links application to ROOT", func() {
 				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
 
-				g.Expect(b.Contribute()).To(Succeed())
+				g.Expect(b.Contribute()).To(gomega.Succeed())
 
 				layer := f.Build.Layers.Layer("catalina-base")
 				g.Expect(filepath.Join(layer.Root, "webapps", "ROOT")).To(test.BeASymlink(f.Build.Application.Root))
@@ -96,9 +96,9 @@ func TestBase(t *testing.T) {
 				defer test.ReplaceEnv(t, "BP_TOMCAT_CONTEXT_PATH", "foo/bar")()
 
 				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
 
-				g.Expect(b.Contribute()).To(Succeed())
+				g.Expect(b.Contribute()).To(gomega.Succeed())
 
 				layer := f.Build.Layers.Layer("catalina-base")
 				g.Expect(filepath.Join(layer.Root, "webapps", "foo#bar")).To(test.BeASymlink(f.Build.Application.Root))
@@ -106,24 +106,24 @@ func TestBase(t *testing.T) {
 
 			it("contributes configuration", func() {
 				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
 
-				g.Expect(b.Contribute()).To(Succeed())
+				g.Expect(b.Contribute()).To(gomega.Succeed())
 
 				layer := f.Build.Layers.Layer("catalina-base")
-				g.Expect(filepath.Join(layer.Root, "conf", "context.xml")).To(BeAnExistingFile())
-				g.Expect(filepath.Join(layer.Root, "conf", "logging.properties")).To(BeAnExistingFile())
-				g.Expect(filepath.Join(layer.Root, "conf", "server.xml")).To(BeAnExistingFile())
+				g.Expect(filepath.Join(layer.Root, "conf", "context.xml")).To(gomega.BeAnExistingFile())
+				g.Expect(filepath.Join(layer.Root, "conf", "logging.properties")).To(gomega.BeAnExistingFile())
+				g.Expect(filepath.Join(layer.Root, "conf", "server.xml")).To(gomega.BeAnExistingFile())
 			})
 
 			it("contributes access logging support", func() {
 				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
 
-				g.Expect(b.Contribute()).To(Succeed())
+				g.Expect(b.Contribute()).To(gomega.Succeed())
 
 				layer := f.Build.Layers.Layer("catalina-base")
-				g.Expect(filepath.Join(layer.Root, "lib", "stub-tomcat-access-logging-support.jar")).To(BeAnExistingFile())
+				g.Expect(filepath.Join(layer.Root, "lib", "stub-tomcat-access-logging-support.jar")).To(gomega.BeAnExistingFile())
 				g.Expect(layer).To(test.HaveProfile("access-logging", `ENABLED=${BPL_TOMCAT_ACCESS_LOGGING:=n}
 
 if [[ "${ENABLED}" = "n" ]]; then
@@ -138,23 +138,23 @@ export JAVA_OPTS="${JAVA_OPTS} -Daccess.logging.enabled=enabled"
 
 			it("contributes lifecycle support", func() {
 				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
 
-				g.Expect(b.Contribute()).To(Succeed())
+				g.Expect(b.Contribute()).To(gomega.Succeed())
 
 				layer := f.Build.Layers.Layer("catalina-base")
-				g.Expect(filepath.Join(layer.Root, "lib", "stub-tomcat-lifecycle-support.jar")).To(BeAnExistingFile())
+				g.Expect(filepath.Join(layer.Root, "lib", "stub-tomcat-lifecycle-support.jar")).To(gomega.BeAnExistingFile())
 			})
 
 			it("contributes logging support", func() {
 				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
 
-				g.Expect(b.Contribute()).To(Succeed())
+				g.Expect(b.Contribute()).To(gomega.Succeed())
 
 				layer := f.Build.Layers.Layer("catalina-base")
 				destination := filepath.Join(layer.Root, "bin", "stub-tomcat-logging-support.jar")
-				g.Expect(destination).To(BeAnExistingFile())
+				g.Expect(destination).To(gomega.BeAnExistingFile())
 				g.Expect(filepath.Join(layer.Root, "bin", "setenv.sh")).To(test.HavePermissions(0755))
 				g.Expect(filepath.Join(layer.Root, "bin", "setenv.sh")).To(test.HaveContent(fmt.Sprintf(`#!/bin/sh
 
@@ -165,19 +165,19 @@ CLASSPATH=%s`, destination)))
 				f.AddDependency("tomcat-external-configuration", filepath.Join("testdata", "stub-external-configuration.tar.gz"))
 
 				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
 
-				g.Expect(b.Contribute()).To(Succeed())
+				g.Expect(b.Contribute()).To(gomega.Succeed())
 
 				layer := f.Build.Layers.Layer("catalina-base")
-				g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(BeAnExistingFile())
+				g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
 			})
 
 			it("sets CATALINA_BASE", func() {
 				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(HaveOccurred())
+				g.Expect(err).NotTo(gomega.HaveOccurred())
 
-				g.Expect(b.Contribute()).To(Succeed())
+				g.Expect(b.Contribute()).To(gomega.Succeed())
 
 				layer := f.Build.Layers.Layer("catalina-base")
 				g.Expect(layer).To(test.HaveLayerMetadata(false, false, true))
