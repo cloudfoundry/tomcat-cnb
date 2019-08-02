@@ -22,8 +22,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/buildpack/libbuildpack/buildplan"
-	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/cloudfoundry/tomcat-cnb/base"
 	"github.com/onsi/gomega"
@@ -42,19 +40,7 @@ func TestBase(t *testing.T) {
 			f = test.NewBuildFactory(t)
 		})
 
-		it("results false with no jvm-application", func() {
-			if err := os.MkdirAll(filepath.Join(f.Build.Application.Root, "WEB-INF"), 0755); err != nil {
-				t.Fatal(err)
-			}
-
-			_, ok, err := base.NewBase(f.Build)
-			g.Expect(err).NotTo(gomega.HaveOccurred())
-			g.Expect(ok).To(gomega.BeFalse())
-		})
-
 		it("returns false with no WEB-INF", func() {
-			f.AddBuildPlan(jvmapplication.Dependency, buildplan.Dependency{})
-
 			_, ok, err := base.NewBase(f.Build)
 			g.Expect(err).NotTo(gomega.HaveOccurred())
 			g.Expect(ok).To(gomega.BeFalse())
@@ -66,7 +52,6 @@ func TestBase(t *testing.T) {
 				f.AddDependency("tomcat-access-logging-support", filepath.Join("testdata", "stub-tomcat-access-logging-support.jar"))
 				f.AddDependency("tomcat-lifecycle-support", filepath.Join("testdata", "stub-tomcat-lifecycle-support.jar"))
 				f.AddDependency("tomcat-logging-support", filepath.Join("testdata", "stub-tomcat-logging-support.jar"))
-				f.AddBuildPlan(jvmapplication.Dependency, buildplan.Dependency{})
 				test.TouchFile(t, filepath.Join(f.Build.Buildpack.Root, "context.xml"))
 				test.TouchFile(t, filepath.Join(f.Build.Buildpack.Root, "logging.properties"))
 				test.TouchFile(t, filepath.Join(f.Build.Buildpack.Root, "server.xml"))

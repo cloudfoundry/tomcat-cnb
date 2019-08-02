@@ -24,7 +24,6 @@ import (
 	"strings"
 
 	"github.com/buildpack/libbuildpack/application"
-	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/build"
 	"github.com/cloudfoundry/libcfbuildpack/buildpack"
 	"github.com/cloudfoundry/libcfbuildpack/helper"
@@ -211,10 +210,6 @@ func (m marker) Identity() (string, string) {
 
 // NewBase creates a new CATALINA_BASE instance.  OK is true if the application contains a "WEB-INF" directory.
 func NewBase(build build.Build) (Base, bool, error) {
-	if _, ok := build.BuildPlan[jvmapplication.Dependency]; !ok {
-		return Base{}, false, nil
-	}
-
 	ok, err := helper.FileExists(filepath.Join(build.Application.Root, "WEB-INF"))
 	if err != nil {
 		return Base{}, false, err

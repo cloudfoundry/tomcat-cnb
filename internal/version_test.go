@@ -20,8 +20,8 @@ import (
 	"testing"
 
 	bp "github.com/buildpack/libbuildpack/buildpack"
-	"github.com/buildpack/libbuildpack/buildplan"
 	"github.com/cloudfoundry/libcfbuildpack/buildpack"
+	"github.com/cloudfoundry/libcfbuildpack/buildpackplan"
 	"github.com/cloudfoundry/libcfbuildpack/logger"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/cloudfoundry/tomcat-cnb/internal"
@@ -38,30 +38,30 @@ func TestVersion(t *testing.T) {
 		it("uses $BP_TOMCAT_VERSION if set", func() {
 			defer test.ReplaceEnv(t, "BP_TOMCAT_VERSION", "test-version")()
 			buildpack := buildpack.NewBuildpack(bp.Buildpack{}, logger.Logger{})
-			dependency := buildplan.Dependency{}
+			plan := buildpackplan.Plan{}
 
-			g.Expect(internal.Version("test-id", dependency, buildpack)).To(gomega.Equal("test-version"))
+			g.Expect(internal.Version("test-id", plan, buildpack)).To(gomega.Equal("test-version"))
 		})
 
 		it("uses build plan version if set", func() {
 			buildpack := buildpack.NewBuildpack(bp.Buildpack{}, logger.Logger{})
-			dependency := buildplan.Dependency{Version: "test-version"}
+			plan := buildpackplan.Plan{Version: "test-version"}
 
-			g.Expect(internal.Version("test-id", dependency, buildpack)).To(gomega.Equal("test-version"))
+			g.Expect(internal.Version("test-id", plan, buildpack)).To(gomega.Equal("test-version"))
 		})
 
 		it("uses buildpack default version if set", func() {
 			buildpack := buildpack.NewBuildpack(bp.Buildpack{Metadata: buildpack.Metadata{"default-versions": map[string]interface{}{"test-id": "test-version"}}}, logger.Logger{})
-			dependency := buildplan.Dependency{}
+			plan := buildpackplan.Plan{}
 
-			g.Expect(internal.Version("test-id", dependency, buildpack)).To(gomega.Equal("test-version"))
+			g.Expect(internal.Version("test-id", plan, buildpack)).To(gomega.Equal("test-version"))
 		})
 
 		it("return error if none set", func() {
 			buildpack := buildpack.NewBuildpack(bp.Buildpack{Metadata: buildpack.Metadata{"default-versions": map[string]interface{}{"test-id-2": "test-version"}}}, logger.Logger{})
-			dependency := buildplan.Dependency{}
+			plan := buildpackplan.Plan{}
 
-			_, err := internal.Version("test-id", dependency, buildpack)
+			_, err := internal.Version("test-id", plan, buildpack)
 			g.Expect(err).To(gomega.MatchError("test-id does not map to a string in default-versions map"))
 		})
 	}, spec.Report(report.Terminal{}))

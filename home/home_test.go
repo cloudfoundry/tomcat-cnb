@@ -21,8 +21,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/buildpack/libbuildpack/buildplan"
-	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/layers"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/cloudfoundry/tomcat-cnb/home"
@@ -42,9 +40,8 @@ func TestHome(t *testing.T) {
 			f = test.NewBuildFactory(t)
 		})
 
-		it("returns true with jvm-application and WEB-INF", func() {
+		it("returns true with WEB-INF", func() {
 			f.AddDependency("tomcat", filepath.Join("testdata", "stub-tomcat.tar.gz"))
-			f.AddBuildPlan(jvmapplication.Dependency, buildplan.Dependency{})
 			if err := os.MkdirAll(filepath.Join(f.Build.Application.Root, "WEB-INF"), 0755); err != nil {
 				t.Fatal(err)
 			}

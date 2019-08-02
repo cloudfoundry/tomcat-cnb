@@ -57,12 +57,17 @@ func (h Home) Contribute() error {
 
 // NewHome creates a new CATALINA_HOME instance.
 func NewHome(build build.Build) (Home, error) {
+	p, _, err := build.Plans.GetShallowMerged(TomcatDependency)
+	if err != nil {
+		return Home{}, err
+	}
+
 	deps, err := build.Buildpack.Dependencies()
 	if err != nil {
 		return Home{}, err
 	}
 
-	version, err := internal.Version(TomcatDependency, build.BuildPlan[TomcatDependency], build.Buildpack)
+	version, err := internal.Version(TomcatDependency, p, build.Buildpack)
 	if err != nil {
 		return Home{}, err
 	}
