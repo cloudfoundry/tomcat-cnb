@@ -41,11 +41,9 @@ func TestDetect(t *testing.T) {
 
 		it("always passes", func() {
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
-			g.Expect(f.Plans).To(gomega.Equal(buildplan.Plans{
-				Plan: buildplan.Plan{
-					Requires: []buildplan.Required{
-						{Name: jvmapplication.Dependency},
-					},
+			g.Expect(f.Plans).To(test.HavePlans(buildplan.Plan{
+				Requires: []buildplan.Required{
+					{Name: jvmapplication.Dependency},
 				},
 			}))
 		})
