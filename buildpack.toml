@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+api = "0.2"
+
 [buildpack]
-id = "org.cloudfoundry.tomcat"
-name = "Cloud Foundry Apache Tomcat Buildpack"
+id      = "org.cloudfoundry.tomcat"
+name    = "Cloud Foundry Apache Tomcat Buildpack"
 version = "1.0.0-BUILD-SNAPSHOT"
 
 [[stacks]]
@@ -110,7 +112,7 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
 #  type = "Proprietary"
 
 [metadata]
-pre_package = "ci/build.sh"
+pre_package   = "ci/build.sh"
 include_files = [
   "LICENSE",
   "NOTICE",
