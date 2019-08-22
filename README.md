@@ -1,5 +1,5 @@
 # `tomcat-cnb`
-The Tomcat Buildpack is a Cloud Native Buildpack V3 that provides Apache Tomcat to applications that are WAR files.
+The Cloud Foundry Tomcat Buildpack is a Cloud Native Buildpack V3 that provides Apache Tomcat to applications that are WAR files.
 
 This buildpack is designed to work in collaboration with other buildpacks.
 
