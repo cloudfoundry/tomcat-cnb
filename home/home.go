@@ -48,9 +48,9 @@ func (h Home) Contribute() error {
 
 	return h.layers.WriteApplicationMetadata(layers.Metadata{
 		Processes: layers.Processes{
-			{"task", command},
-			{"tomcat", command},
-			{"web", command},
+			{Type: "task", Command: command},
+			{Type: "tomcat", Command: command},
+			{Type: "web", Command: command},
 		},
 	})
 }

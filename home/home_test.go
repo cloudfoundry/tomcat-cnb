@@ -59,9 +59,9 @@ func TestHome(t *testing.T) {
 			command := "catalina.sh run"
 			g.Expect(f.Build.Layers).To(test.HaveApplicationMetadata(layers.Metadata{
 				Processes: []layers.Process{
-					{"task", command},
-					{"tomcat", command},
-					{"web", command},
+					{Type: "task", Command: command},
+					{Type: "tomcat", Command: command},
+					{Type: "web", Command: command},
 				},
 			}))
 		})
