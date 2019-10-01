@@ -87,6 +87,10 @@ func (b Base) Contribute() error {
 			return err
 		}
 
+		if err := b.contributeTemporaryDirectory(layer); err != nil {
+			return err
+		}
+
 		if err := b.contributeApplication(layer); err != nil {
 			return err
 		}
@@ -146,6 +150,11 @@ func (b Base) contributeConfiguration(layer layers.Layer) error {
 		return err
 	}
 
+	layer.Logger.Body("Copying web.xml to %s/conf", layer.Root)
+	if err := helper.CopyFile(filepath.Join(b.buildpack.Root, "web.xml"), filepath.Join(layer.Root, "conf", "web.xml")); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -197,6 +206,10 @@ func (b Base) contributeLoggingSupport(layer layers.Layer) error {
 	return helper.WriteFile(filepath.Join(layer.Root, "bin", "setenv.sh"), 0755, `#!/bin/sh
 
 CLASSPATH=%s`, destination)
+}
+
+func (Base) contributeTemporaryDirectory(layer layers.Layer) error {
+	return os.MkdirAll(filepath.Join(layer.Root, "temp"), 700)
 }
 
 type marker struct {

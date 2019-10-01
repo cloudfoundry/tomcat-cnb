@@ -55,6 +55,7 @@ func TestBase(t *testing.T) {
 				test.TouchFile(t, filepath.Join(f.Build.Buildpack.Root, "context.xml"))
 				test.TouchFile(t, filepath.Join(f.Build.Buildpack.Root, "logging.properties"))
 				test.TouchFile(t, filepath.Join(f.Build.Buildpack.Root, "server.xml"))
+				test.TouchFile(t, filepath.Join(f.Build.Buildpack.Root, "web.xml"))
 
 				if err := os.MkdirAll(filepath.Join(f.Build.Application.Root, "WEB-INF"), 0755); err != nil {
 					t.Fatal(err)
@@ -99,6 +100,7 @@ func TestBase(t *testing.T) {
 				g.Expect(filepath.Join(layer.Root, "conf", "context.xml")).To(gomega.BeAnExistingFile())
 				g.Expect(filepath.Join(layer.Root, "conf", "logging.properties")).To(gomega.BeAnExistingFile())
 				g.Expect(filepath.Join(layer.Root, "conf", "server.xml")).To(gomega.BeAnExistingFile())
+				g.Expect(filepath.Join(layer.Root, "conf", "web.xml")).To(gomega.BeAnExistingFile())
 			})
 
 			it("contributes access logging support", func() {
@@ -144,6 +146,16 @@ export JAVA_OPTS="${JAVA_OPTS} -Daccess.logging.enabled=enabled"
 				g.Expect(filepath.Join(layer.Root, "bin", "setenv.sh")).To(test.HaveContent(fmt.Sprintf(`#!/bin/sh
 
 CLASSPATH=%s`, destination)))
+			})
+
+			it("contributes temporary directory", func() {
+				b, _, err := base.NewBase(f.Build)
+				g.Expect(err).NotTo(gomega.HaveOccurred())
+
+				g.Expect(b.Contribute()).To(gomega.Succeed())
+
+				layer := f.Build.Layers.Layer("catalina-base")
+				g.Expect(filepath.Join(layer.Root, "temp")).To(gomega.BeADirectory())
 			})
 
 			it("contributes external configuration", func() {

@@ -123,4 +123,5 @@ include_files = [
   "context.xml",
   "logging.properties",
   "server.xml",
+  "web.xml",
 ]
