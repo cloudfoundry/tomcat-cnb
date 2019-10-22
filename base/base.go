@@ -17,12 +17,14 @@
 package base
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
 	"regexp"
 	"strings"
 
+	"github.com/Masterminds/semver"
 	"github.com/buildpack/libbuildpack/application"
 	"github.com/cloudfoundry/libcfbuildpack/build"
 	"github.com/cloudfoundry/libcfbuildpack/buildpack"
@@ -61,6 +63,10 @@ func (b Base) Contribute() error {
 	b.accessLoggingLayer.Touch()
 	b.lifecycleLayer.Touch()
 	b.loggingLayer.Touch()
+
+	if !reflect.DeepEqual(b.externalConfigurationLayer, layers.DownloadLayer{}) {
+		b.externalConfigurationLayer.Touch()
+	}
 
 	return b.layer.Contribute(marker{b.contextPath, b.dependencies}, func(layer layers.Layer) error {
 		if err := os.RemoveAll(layer.Root); err != nil {
@@ -258,13 +264,10 @@ func NewBase(build build.Build) (Base, bool, error) {
 	d = append(d, log)
 
 	var externalConfigurationLayer layers.DownloadLayer
-	if deps.Has(ExternalConfiguration) {
-		e, err := deps.Best(ExternalConfiguration, "", build.Stack)
-		if err != nil {
-			return Base{}, false, err
-		}
+	if e, ok, err := externalConfiguration(build, deps); err != nil {
+		return Base{}, false, err
+	} else if ok {
 		d = append(d, e)
-
 		externalConfigurationLayer = build.Layers.DownloadLayer(e)
 	}
 
@@ -289,4 +292,44 @@ func contextPath() string {
 
 	cp = regexp.MustCompile("^/").ReplaceAllString(cp, "")
 	return strings.ReplaceAll(cp, "/", "#")
+}
+
+func externalConfiguration(build build.Build, deps buildpack.Dependencies) (buildpack.Dependency, bool, error) {
+	v, vOk := os.LookupEnv("BP_TOMCAT_EXT_CONF_VERSION")
+	u, uOk := os.LookupEnv("BP_TOMCAT_EXT_CONF_URI")
+	s, sOk := os.LookupEnv("BP_TOMCAT_EXT_CONF_SHA256")
+
+	if vOk != uOk || uOk != sOk {
+		return buildpack.Dependency{}, false, fmt.Errorf("all of $BP_TOMCAT_EXT_CONF_VERSION, $BP_TOMCAT_EXT_CONF_URI, and $BP_TOMCAT_EXT_CONF_SHA256 must be set")
+	}
+
+	if vOk {
+		version, err := semver.NewVersion(v)
+		if err != nil {
+			return buildpack.Dependency{}, false, err
+		}
+
+		return buildpack.Dependency{
+			ID:      ExternalConfiguration,
+			Name:    "Tomcat External Configuration",
+			Version: buildpack.Version{Version: version},
+			URI:     u,
+			SHA256:  s,
+			Stacks:  buildpack.Stacks{build.Stack},
+			Licenses: buildpack.Licenses{
+				{Type: "Proprietary"},
+			},
+		}, true, nil
+	}
+	
+	if deps.Has(ExternalConfiguration) {
+		e, err := deps.Best(ExternalConfiguration, "", build.Stack)
+		if err != nil {
+			return buildpack.Dependency{}, false, err
+		}
+
+		return e, true, nil
+	}
+
+	return buildpack.Dependency{}, false, nil
 }

@@ -22,6 +22,10 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/BurntSushi/toml"
+	"github.com/Masterminds/semver"
+	"github.com/cloudfoundry/libcfbuildpack/buildpack"
+	"github.com/cloudfoundry/libcfbuildpack/helper"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/cloudfoundry/tomcat-cnb/base"
 	"github.com/onsi/gomega"
@@ -158,16 +162,86 @@ CLASSPATH=%s`, destination)))
 				g.Expect(filepath.Join(layer.Root, "temp")).To(gomega.BeADirectory())
 			})
 
-			it("contributes external configuration", func() {
-				f.AddDependency("tomcat-external-configuration", filepath.Join("testdata", "stub-external-configuration.tar.gz"))
+			when("external configuration", func() {
 
-				b, _, err := base.NewBase(f.Build)
-				g.Expect(err).NotTo(gomega.HaveOccurred())
+				it("fails with BP_TOMCAT_EXT_CONF_VERSION and no others", func() {
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_VERSION", "test-version")()
 
-				g.Expect(b.Contribute()).To(gomega.Succeed())
+					_, _, err := base.NewBase(f.Build)
+					g.Expect(err).To(gomega.MatchError("all of $BP_TOMCAT_EXT_CONF_VERSION, $BP_TOMCAT_EXT_CONF_URI, and $BP_TOMCAT_EXT_CONF_SHA256 must be set"))
+				})
 
-				layer := f.Build.Layers.Layer("catalina-base")
-				g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+				it("fails with BP_TOMCAT_EXT_CONF_URI and no others", func() {
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_URI", "test-uri")()
+
+					_, _, err := base.NewBase(f.Build)
+					g.Expect(err).To(gomega.MatchError("all of $BP_TOMCAT_EXT_CONF_VERSION, $BP_TOMCAT_EXT_CONF_URI, and $BP_TOMCAT_EXT_CONF_SHA256 must be set"))
+				})
+
+				it("fails with BP_TOMCAT_EXT_CONF_SHA256 and no others", func() {
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_SHA256", "test-sha256")()
+
+					_, _, err := base.NewBase(f.Build)
+					g.Expect(err).To(gomega.MatchError("all of $BP_TOMCAT_EXT_CONF_VERSION, $BP_TOMCAT_EXT_CONF_URI, and $BP_TOMCAT_EXT_CONF_SHA256 must be set"))
+				})
+
+				it("contributes env var external configuration", func() {
+					v, err := semver.NewVersion("1.0.0")
+					g.Expect(err).NotTo(gomega.HaveOccurred())
+
+					d := buildpack.Dependency{
+						ID:      "tomcat-external-configuration",
+						Name:    "Tomcat External Configuration",
+						Version: buildpack.Version{Version: v},
+						URI:     "https://localhost/stub-external-configuration.tar.gz",
+						SHA256:  "test-sha256",
+						Stacks:  buildpack.Stacks{f.Build.Stack},
+						Licenses: buildpack.Licenses{
+							{Type: "Proprietary"},
+						},
+					}
+
+					l := f.Build.Layers.Layer(d.SHA256)
+					if err := helper.CopyFile(filepath.Join("testdata", "stub-external-configuration.tar.gz"),
+						filepath.Join(l.Root, "stub-external-configuration.tar.gz")); err != nil {
+						t.Fatal(err)
+					}
+
+					file, err := os.OpenFile(l.Metadata, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+					if err != nil {
+						t.Fatal(err)
+					}
+					defer file.Close()
+
+					if err := toml.NewEncoder(file).Encode(map[string]interface{}{"metadata": d}); err != nil {
+						t.Fatal(err)
+					}
+
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_VERSION", d.Version.String())()
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_URI", d.URI)()
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_SHA256", d.SHA256)()
+
+					b, _, err := base.NewBase(f.Build)
+					g.Expect(err).NotTo(gomega.HaveOccurred())
+
+					g.Expect(b.Contribute()).To(gomega.Succeed())
+
+					layer := f.Build.Layers.Layer("catalina-base")
+					g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+				})
+
+				it("contributes buildpack.toml external configuration", func() {
+					f.AddDependency("tomcat-external-configuration", filepath.Join("testdata", "stub-external-configuration.tar.gz"))
+
+					b, _, err := base.NewBase(f.Build)
+					g.Expect(err).NotTo(gomega.HaveOccurred())
+
+					g.Expect(b.Contribute()).To(gomega.Succeed())
+
+					layer := f.Build.Layers.Layer("catalina-base")
+					g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+				})
+
 			})
 
 			it("sets CATALINA_BASE", func() {
