@@ -215,7 +215,7 @@ CLASSPATH=%s`, destination)
 }
 
 func (Base) contributeTemporaryDirectory(layer layers.Layer) error {
-	return os.MkdirAll(filepath.Join(layer.Root, "temp"), 700)
+	return os.MkdirAll(filepath.Join(layer.Root, "temp"), 0700)
 }
 
 type marker struct {
@@ -321,7 +321,7 @@ func externalConfiguration(build build.Build, deps buildpack.Dependencies) (buil
 			},
 		}, true, nil
 	}
-	
+
 	if deps.Has(ExternalConfiguration) {
 		e, err := deps.Best(ExternalConfiguration, "", build.Stack)
 		if err != nil {
