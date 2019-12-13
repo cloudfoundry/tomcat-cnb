@@ -43,9 +43,9 @@ stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" 
 [[metadata.dependencies]]
 id      = "tomcat"
 name    = "Apache Tomcat"
-version = "8.5.49"
-uri     = "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.49/bin/apache-tomcat-8.5.49.tar.gz"
-sha256  = "40f23e1d9a882b33bbc0029bc17405a231099437b2bf1fb60f55a620385831d4"
+version = "8.5.50"
+uri     = "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.50/bin/apache-tomcat-8.5.50.tar.gz"
+sha256  = "ea762293e889f85d40f5ec14ac4474e133a379522d623f4ba5993da6260bf06e"
 stacks  = [ "io.buildpacks.stacks.bionic", "org.cloudfoundry.stacks.cflinuxfs3" ]
 
   [[metadata.dependencies.licenses]]
