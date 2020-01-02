@@ -123,7 +123,7 @@ fi
 
 printf "Tomcat Access Logging enabled\n"
 
-export JAVA_OPTS="${JAVA_OPTS} -Daccess.logging.enabled=enabled"
+export JAVA_OPTS="${JAVA_OPTS} -Daccess.logging.enabled=true"
 `))
 			})
 
