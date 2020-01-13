@@ -107,6 +107,7 @@ func (b Base) Contribute() error {
 
 func (b Base) contributeAccessLogging(layer layers.Layer) error {
 	layer.Logger.Header("Contributing Access Logging Support")
+	layer.Logger.LaunchConfiguration("Set $BPL_TOMCAT_ACCESS_LOGGING to activate", "inactive")
 
 	artifact, err := b.accessLoggingLayer.Artifact()
 	if err != nil {

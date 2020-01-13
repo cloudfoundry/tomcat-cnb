@@ -17,7 +17,7 @@ The buildpack will do the following:
   * `logging.properties` from the buildpack root
   * `server.xml` from the buildpack root
   * `web.xml` from the buildpack root
-  * [Access Logging Support][als]
+  * [Access Logging Support][als] activated via [environment variables](#Configuration)
   * [Lifecycle Support][lcs]
   * [Logging Support][lgs]
   * External Configuration if configured in either `buildpack.toml` or via [environment variables](#Configuration)
@@ -35,9 +35,10 @@ The buildpack will do the following:
 | `$BP_TOMCAT_EXT_CONF_URI` | The download URI of the external configuration package
 | `$BP_TOMCAT_EXT_CONF_VERSION` | The version of the external configuration package
 | `$BP_TOMCAT_VERSION` | Semver value of the version of Tomcat to use.  Defaults to `9.*`.
+| `BPL_TOMCAT_ACCESS_LOGGING` | Whether access logging should be activated.  Defaults to inactive. 
 
 ### External Configuration Package
-he artifacts that the repository provides must be in TAR format and must follow the Tomcat archive structure:
+The artifacts that the repository provides must be in TAR format and must follow the Tomcat archive structure:
 
 ```
 tomcat
