@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cloudfoundry/libcfbuildpack/build"
+	"github.com/cloudfoundry/libcfbuildpack/v2/build"
 	"github.com/cloudfoundry/tomcat-cnb/base"
 	"github.com/cloudfoundry/tomcat-cnb/home"
 )

@@ -24,9 +24,9 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/Masterminds/semver"
-	"github.com/cloudfoundry/libcfbuildpack/buildpack"
-	"github.com/cloudfoundry/libcfbuildpack/helper"
-	"github.com/cloudfoundry/libcfbuildpack/test"
+	"github.com/cloudfoundry/libcfbuildpack/v2/buildpack"
+	"github.com/cloudfoundry/libcfbuildpack/v2/helper"
+	"github.com/cloudfoundry/libcfbuildpack/v2/test"
 	"github.com/cloudfoundry/tomcat-cnb/base"
 	"github.com/onsi/gomega"
 	"github.com/sclevine/spec"

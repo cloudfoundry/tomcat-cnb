@@ -19,8 +19,8 @@ package internal
 import (
 	"os"
 
-	"github.com/cloudfoundry/libcfbuildpack/buildpack"
-	"github.com/cloudfoundry/libcfbuildpack/buildpackplan"
+	"github.com/cloudfoundry/libcfbuildpack/v2/buildpack"
+	"github.com/cloudfoundry/libcfbuildpack/v2/buildpackplan"
 )
 
 // Version returns the selected version of Tomcat using the following precedence:
