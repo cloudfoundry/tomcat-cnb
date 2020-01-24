@@ -21,7 +21,6 @@ import (
 
 	"github.com/buildpack/libbuildpack/buildplan"
 	"github.com/buildpack/libbuildpack/detect"
-	"github.com/cloudfoundry/jvm-application-cnb/jvmapplication"
 	"github.com/cloudfoundry/libcfbuildpack/test"
 	"github.com/onsi/gomega"
 	"github.com/sclevine/spec"
@@ -43,7 +42,7 @@ func TestDetect(t *testing.T) {
 			g.Expect(d(f.Detect)).To(gomega.Equal(detect.PassStatusCode))
 			g.Expect(f.Plans).To(test.HavePlans(buildplan.Plan{
 				Requires: []buildplan.Required{
-					{Name: jvmapplication.Dependency},
+					{Name: "jvm-application"},
 				},
 			}))
 		})
