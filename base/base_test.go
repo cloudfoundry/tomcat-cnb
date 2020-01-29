@@ -230,6 +230,52 @@ CLASSPATH=%s`, destination)))
 					g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
 				})
 
+				it("contributes env var external configuration with directory", func() {
+					v, err := semver.NewVersion("1.0.0")
+					g.Expect(err).NotTo(gomega.HaveOccurred())
+
+					d := buildpack.Dependency{
+						ID:      "tomcat-external-configuration",
+						Name:    "Tomcat External Configuration",
+						Version: buildpack.Version{Version: v},
+						URI:     "https://localhost/stub-external-configuration-with-directory.tar.gz",
+						SHA256:  "test-sha256",
+						Stacks:  buildpack.Stacks{f.Build.Stack},
+						Licenses: buildpack.Licenses{
+							{Type: "Proprietary"},
+						},
+					}
+
+					l := f.Build.Layers.Layer(d.SHA256)
+					if err := helper.CopyFile(filepath.Join("testdata", "stub-external-configuration-with-directory.tar.gz"),
+						filepath.Join(l.Root, "stub-external-configuration-with-directory.tar.gz")); err != nil {
+						t.Fatal(err)
+					}
+
+					file, err := os.OpenFile(l.Metadata, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+					if err != nil {
+						t.Fatal(err)
+					}
+					defer file.Close()
+
+					if err := toml.NewEncoder(file).Encode(map[string]interface{}{"metadata": d}); err != nil {
+						t.Fatal(err)
+					}
+
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_VERSION", d.Version.String())()
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_URI", d.URI)()
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_SHA256", d.SHA256)()
+					defer test.ReplaceEnv(t, "BP_TOMCAT_EXT_CONF_STRIP", "1")()
+
+					b, _, err := base.NewBase(f.Build)
+					g.Expect(err).NotTo(gomega.HaveOccurred())
+
+					g.Expect(b.Contribute()).To(gomega.Succeed())
+
+					layer := f.Build.Layers.Layer("catalina-base")
+					g.Expect(filepath.Join(layer.Root, "fixture-marker")).To(gomega.BeAnExistingFile())
+				})
+
 				it("contributes buildpack.toml external configuration", func() {
 					f.AddDependency("tomcat-external-configuration", filepath.Join("testdata", "stub-external-configuration.tar.gz"))
 

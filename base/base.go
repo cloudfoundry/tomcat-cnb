@@ -22,6 +22,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/Masterminds/semver"
@@ -179,7 +180,18 @@ func (b Base) contributeExternalConfiguration(layer layers.Layer) error {
 
 	layer.Logger.Body("Expanding to %s", layer.Root)
 
-	return helper.ExtractTarGz(artifact, layer.Root, 0)
+	var c int
+	if s, ok := os.LookupEnv("BP_TOMCAT_EXT_CONF_STRIP"); ok {
+		if i, err := strconv.Atoi(s); err != nil {
+			return err
+		} else {
+			c = i
+		}
+	} else {
+		c = 0
+	}
+
+	return helper.ExtractTarGz(artifact, layer.Root, c)
 }
 
 func (b Base) contributeLifecycleSupport(layer layers.Layer) error {

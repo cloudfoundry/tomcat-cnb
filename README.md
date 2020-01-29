@@ -32,6 +32,7 @@ The buildpack will do the following:
 | -------------------- | -----------
 | `$BP_TOMCAT_CONTEXT_PATH` | The context path to mount the application at.  Defaults to empty (`ROOT`).
 | `$BP_TOMCAT_EXT_CONF_SHA256` | The SHA256 hash of the external configuration package
+| `$BP_TOMCAT_EXT_CONF_STRIP` | The number of directory levels to strip from the external configuration package.  Defaults to `0`. 
 | `$BP_TOMCAT_EXT_CONF_URI` | The download URI of the external configuration package
 | `$BP_TOMCAT_EXT_CONF_VERSION` | The version of the external configuration package
 | `$BP_TOMCAT_VERSION` | Semver value of the version of Tomcat to use.  Defaults to `9.*`.
