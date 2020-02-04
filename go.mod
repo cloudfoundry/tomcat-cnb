@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1
 	github.com/Masterminds/semver v1.5.0
 	github.com/buildpacks/libbuildpack/v2 v2.0.6
-	github.com/cloudfoundry/libcfbuildpack/v2 v2.1.3
+	github.com/cloudfoundry/libcfbuildpack/v2 v2.1.4
 	github.com/onsi/gomega v1.9.0
 	github.com/sclevine/spec v1.4.0
 )
