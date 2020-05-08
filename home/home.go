@@ -17,6 +17,10 @@
 package home
 
 import (
+	"io/ioutil"
+	"path/filepath"
+	"regexp"
+
 	"github.com/cloudfoundry/libcfbuildpack/v2/build"
 	"github.com/cloudfoundry/libcfbuildpack/v2/helper"
 	"github.com/cloudfoundry/libcfbuildpack/v2/layers"
@@ -36,6 +40,10 @@ func (h Home) Contribute() error {
 		layer.Logger.Body("Extracting to %s", layer.Root)
 
 		if err := helper.ExtractTarGz(artifact, layer.Root, 1); err != nil {
+			return err
+		}
+
+		if err := modifyCatalinaStart(layer); err != nil {
 			return err
 		}
 
@@ -81,4 +89,18 @@ func NewHome(build build.Build) (Home, error) {
 		build.Layers.DependencyLayer(dep),
 		build.Layers,
 	}, nil
+}
+
+var pattern = regexp.MustCompile(`^\s*CLASSPATH=\s*$`)
+
+func modifyCatalinaStart(layer layers.DependencyLayer) error {
+	filename := filepath.Join(layer.Root, "bin", "catalina.sh")
+	content, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	content = pattern.ReplaceAll(content, []byte(`#CLASSPATH=`))
+	return ioutil.WriteFile(filename, content, 0755)
+
 }

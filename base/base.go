@@ -224,7 +224,7 @@ func (b Base) contributeLoggingSupport(layer layers.Layer) error {
 	layer.Logger.Body("Writing %s/bin/setenv.sh", layer.Root)
 	return helper.WriteFile(filepath.Join(layer.Root, "bin", "setenv.sh"), 0755, `#!/bin/sh
 
-CLASSPATH=%s`, destination)
+CLASSPATH="$CLASSPATH:%s"`, destination)
 }
 
 func (Base) contributeTemporaryDirectory(layer layers.Layer) error {
