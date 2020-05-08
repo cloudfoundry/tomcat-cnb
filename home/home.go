@@ -91,16 +91,26 @@ func NewHome(build build.Build) (Home, error) {
 	}, nil
 }
 
-var pattern = regexp.MustCompile(`^\s*CLASSPATH=\s*$`)
+var pattern = regexp.MustCompile(`\n\s*CLASSPATH=\s*\n`)
 
 func modifyCatalinaStart(layer layers.DependencyLayer) error {
+	layer.Logger.Body("Modifying catalina.sh")
+
 	filename := filepath.Join(layer.Root, "bin", "catalina.sh")
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
 	}
 
-	content = pattern.ReplaceAll(content, []byte(`#CLASSPATH=`))
-	return ioutil.WriteFile(filename, content, 0755)
+	hit := pattern.Find(content)
+	if hit == nil {
+		layer.Logger.Body("No replacements needed")
+		err = nil
+	} else {
+		layer.Logger.Body("Replacements needed")
+		modifiedContent := pattern.ReplaceAll(content, []byte("\n#CLASSPATH=\n"))
+		err = ioutil.WriteFile(filename, modifiedContent, 0755)
+	}
 
+	return err
 }
